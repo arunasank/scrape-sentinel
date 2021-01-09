@@ -1,0 +1,17 @@
+{
+  "name": "sentinel-extract",
+  "version": "1.0.0",
+  "description": "Get sentinel tiles the easy way!",
+  "main": "get-grid-geojsons.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@turf/bbox": "^6.0.1",
+    "@turf/helpers": "^6.1.4",
+    "@turf/square-grid": "^6.0.2",
+    "utm": "^1.1.1"
+  }
+}
