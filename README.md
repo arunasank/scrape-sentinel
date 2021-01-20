@@ -14,5 +14,4 @@ This gets satellite imagery from sentinelsat
 
 ## Commands
 * Run `npm install` to install all the packages
-* Run `bash config.sh`
 * Run `bash pieline.sh.sh`
