@@ -1,6 +1,6 @@
 # Scrape sentinel
 
-This gets satellite imagery from sentinelsat
+This gets satellite imagery from [sentinelsat](https://sentinelsat.readthedocs.io/en/stable/cli.html)
 
 ## Instructions
 * Create an account on the copernicus open hub: https://scihub.copernicus.eu/
