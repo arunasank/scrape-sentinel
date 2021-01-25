@@ -1,8 +1,7 @@
-#! /bin/sh
+! /bin/sh
 export ROOT=$(pwd)
-export BBOX_GEOJSON_FILE=<absolute path to the bbox geojson file>
-export IMG_SIZE=<final image size required>
-export uname=<sentinelsat username>
-export password=<sentinelsat pwd>
-export START_DATE=<start searching for images from this date>
-export END_DATE=<stop searching for images on this date>
+export BBOX_GEOJSON_FILE=${ROOT}/bbox.json
+export IMG_SIZE=1024
+export START_DATE=20180401
+export END_DATE=20180430
+export CLOUD=50
