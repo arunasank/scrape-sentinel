@@ -1,6 +1,8 @@
 #! /bin/sh
-export ROOT=($pwd)
+export ROOT=$(pwd)
 export BBOX_GEOJSON_FILE=${ROOT}/bbox.json
+echo $BBOX_GEOJSON_FILE
+echo $ROOT
 export IMG_SIZE=1024
 export START_DATE=$1
 export END_DATE=$2
