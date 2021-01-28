@@ -5,12 +5,14 @@ set -xe
 . config.sh
 . login.sh
 
-if [ -d sources ];
+mkdir -p sources
+
+if [ -d sources/${START_DATE}_${END_DATE}/ ];
 then
-    rm -Rf sources
+    rm -Rf sources/${START_DATE}_${END_DATE}/
 fi
 
-mkdir -p sources/
+mkdir sources/${START_DATE}_${END_DATE}
 echo "${BBOX_GEOJSON_FILE} ${IMG_SIZE}"
 node get-grid-geojsons.js
 sh get-tiffs.sh 

@@ -1,5 +1,5 @@
 set -x
-cd ${ROOT}/sources
+cd ${ROOT}/sources/${START_DATE}_${END_DATE}
 for dir in $(ls -d */);
 do
   cd ${dir}
@@ -9,7 +9,7 @@ do
     
     if [[ "$OSTYPE" == "darwin"* ]];
     then
-        DAYS_DIFFERENCE=$(( ( $(date -j -f "%Y%M%d" "${END_DATE}" +%s) - $(date -j -f "%Y%M%d" "${START_DATE}" +%s) )/(60*60*24) ))
+        DAYS_DIFFERENCE=$(( ( $(date -j -f "%Y%m%d" "${END_DATE}" +%s) - $(date -j -f "%Y%m%d" "${START_DATE}" +%s) )/(60*60*24) ))
     elif [[ "$OSTYPE" == "linux-gnu"* ]];
     then
         DAYS_DIFFERENCE=$(( ($(date --date="${END_DATE}" +%s) - $(date --date="${START_DATE}" +%s) )/(60*60*24) ))
@@ -39,7 +39,7 @@ do
         mv search_footprints.geojson search_footprints.json
 
         node ${ROOT}/getSentinelTileIds.js \
-        ${ROOT}/sources/${dir}/search_footprints.json > ${file%.*}-${ITERATOR}.txt
+        ${ROOT}/sources/${START_DATE}_${END_DATE}/${dir}search_footprints.json > ${file%.*}-${ITERATOR}.txt
         
         if [[ ! -s ${file%.*}-${ITERATOR}.txt ]];
         then

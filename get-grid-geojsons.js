@@ -3,6 +3,8 @@ const sqGr = require('@turf/square-grid');
 const th = require('@turf/helpers');
 const fs = require('fs');
 const geojsonFile = process.env.BBOX_GEOJSON_FILE
+const START_DATE = process.env.START_DATE;
+const END_DATE = process.env.END_DATE;
 const imageSize = process.env.IMG_SIZE
 const squareForBBox = require(geojsonFile);
 const bbox = tbox.default(squareForBBox);
@@ -13,8 +15,8 @@ fs.writeFileSync('grids.json', JSON.stringify(grid));
 
 const start = async () => {
   await Promise.all( grid.features.map( async (feature, iterator) => {
-    fs.mkdirSync(`sources/${iterator}`)
-    const path = `sources/${iterator}/${iterator}.json`
+    fs.mkdirSync(`sources/${START_DATE}_${END_DATE}/${iterator}`)
+    const path = `sources/${START_DATE}_${END_DATE}/${iterator}/${iterator}.json`
     fs.writeFileSync(path, JSON.stringify(th.featureCollection([feature])));
   }));
 }

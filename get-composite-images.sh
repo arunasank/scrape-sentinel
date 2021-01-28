@@ -13,7 +13,7 @@ while read number; do
     gsutil -qm cp gs://arunas-arctic-sea-ice/${number}/${dateTime}/*.tiff .
     
     #generate a composite with all the tiffs and the AOI
-    gdalwarp -of GTiff -co COMPRESS=DEFLATE -cutline ~/sources/feature-${number}.geojson -crop_to_cutline -t_srs EPSG:3857 -srcnodata "0 0 0" *.tiff ${number}-${dateTime}-composite-init.tiff
+    gdalwarp -of GTiff -co COMPRESS=DEFLATE -cutline ~/sources/${START_DATE}_${END_DATE}/feature-${number}.geojson -crop_to_cutline -t_srs EPSG:3857 -srcnodata "0 0 0" *.tiff ${number}-${dateTime}-composite-init.tiff
 
     #If the command fails because of invalid tiffs, record the error and skip iteration
     if [ $? -ne 0 ]; then
