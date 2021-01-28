@@ -2,7 +2,7 @@
 
 set -xe
 
-. config.sh
+. config.sh $1 $2
 . login.sh
 
 mkdir -p sources
