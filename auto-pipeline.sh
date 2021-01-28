@@ -1,5 +1,4 @@
 #! /bin/sh
-export ROOT=$(pwd)
 while IFS=" " read -r START END remainder;
 do
     echo $START
