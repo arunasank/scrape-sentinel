@@ -27,11 +27,20 @@ do
             CURRENT_END_DATE=$(date +%Y%m%d -d "${START_DATE} + ${ITERATOR} day")
         fi
       
-      sentinelsat -u ${uname} -p ${password} -s ${CURRENT_START_DATE} \
-      -e ${CURRENT_END_DATE} -g ${file} --cloud ${CLOUD} --sentinel 2 \
-      --instrument MSI --query "producttype=S2MSI1C" \
-      --footprints
-
+      if [[ ${SENTINEL} -eq 2 ]];
+      then
+      
+          sentinelsat -u ${uname} -p ${password} -s ${CURRENT_START_DATE} \
+          -e ${CURRENT_END_DATE} -g ${file} --cloud ${CLOUD} --sentinel ${SENTINEL} \
+          --instrument ${INSTRUMENT} --query ${QUERY} \
+          --footprints
+      elif [[ ${SENTINEL} -eq 1 ]];
+      then
+          sentinelsat -u ${uname} -p ${password} -s ${CURRENT_START_DATE} \
+          -e ${CURRENT_END_DATE} -g ${file} --sentinel ${SENTINEL} \
+          --query ${QUERY} --footprints
+      fi
+          
       CURRENT_START_DATE=${CURRENT_END_DATE}
 
       if [ -f search_footprints.geojson ];
@@ -50,13 +59,39 @@ do
         
         less ${file%.*}-${ITERATOR}.txt | \
         parallel "node ${ROOT}/get-path.js {} ${file%.*}" | parallel "{}"
+        
+        if [[ ${SENTINEL} -eq 2 ]];
+        then
+            gdalwarp -of 'Gtiff' -co COMPRESS=DEFLATE \
+            -cutline ${file} -crop_to_cutline \
+            -t_srs EPSG:3857 -srcnodata "0 0 0" *.jp2 \
+            ${file%.*}-${ITERATOR}.tiff
+            
+            rm *.jp2
+        elif [[ ${SENTINEL} -eq 1 ]];
+        then
+            unzip -j *.zip "*.tiff"
+            rm *.zip*
+            rm *.metalink
+            rm *.xml
+            shopt -s nullglob
+            for satImg in s1*; do
+                polarization=($( echo ${satImg} | cut -d '-' -f 4 ))
+                echo ${polarization}
+                gdalwarp -of 'Gtiff' -tps -r bilinear -tr 10 10  \
+                -cutline ${file} -crop_to_cutline -co COMPRESS=DEFLATE\
+                -t_srs EPSG:3857 -srcnodata 0 -dstnodata 0 ${satImg} \
+                ${file%.*}-${ITERATOR}-${polarization}.tiff
 
-        gdalwarp -of 'Gtiff' -co COMPRESS=DEFLATE \
-        -cutline ${file} -crop_to_cutline \
-        -t_srs EPSG:3857 -srcnodata "0 0 0" *.jp2 \
-        ${file%.*}-${ITERATOR}.tiff
+                if [ -f ${satImg} ];then
+                    rm ${satImg}
+                fi
+            done
+        
 
-        rm *.jp2
+        
+            
+        fi
       fi
 
       ITERATOR=$(( ${ITERATOR} + 1 ))

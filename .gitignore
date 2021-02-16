@@ -3,3 +3,4 @@ login.sh
 .DS_Store
 venv_dir/
 sources/
+aria2.conf
