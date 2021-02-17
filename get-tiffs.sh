@@ -77,7 +77,6 @@ do
             shopt -s nullglob
             for satImg in s1*; do
                 polarization=($( echo ${satImg} | cut -d '-' -f 4 ))
-                echo ${polarization}
                 gdalwarp -of 'Gtiff' -tps -r bilinear -tr 10 10  \
                 -cutline ${file} -crop_to_cutline -co COMPRESS=DEFLATE\
                 -t_srs EPSG:3857 -srcnodata 0 -dstnodata 0 ${satImg} \
